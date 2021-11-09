@@ -10,11 +10,14 @@ const todos = [
   { text: "Enviar ordenes de compra", completed: true },
   { text: "Comprar comida", completed: false },
   { text: "Comprar bebida", completed: true },
+  { text: "Comprar ropa", completed: false },
 ];
+
+const totalTodos = todos.length;
 function App() {
   return (
     <React.Fragment>
-      <TodoCounter />
+      <TodoCounter totalTodos={totalTodos} />
 
       <TodoSearch />
 
