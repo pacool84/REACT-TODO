@@ -1,4 +1,9 @@
 import React from "react";
+import { TodoCounter } from "./TodoCounter";
+import { TodoSearch } from "./TodoSearch";
+import { TodoList } from "./TodoList";
+import { TodoItem } from "./TodoItem";
+import { CreateTodoButton } from "./CreateTodoButton";
 //import "./App.css";
 
 const todos = [
@@ -9,17 +14,17 @@ const todos = [
 function App() {
   return (
     <React.Fragment>
-      {/*  <TodoCounter /> */}
-      <h2>Has completado 2 de 3 TODO´s</h2>
-      {/* <TodoSearch /> */}
-      <input placeholder="Search a ToDo" />
-      {/*  <TodoList>
+      <TodoCounter />
+
+      <TodoSearch />
+
+      <TodoList>
         {todos.map((todo) => (
-          <TodoItem />
+          <TodoItem key={todo.text} text={todo.text} />
         ))}
-      </TodoList> */}
-      {/* <CreateTodoButton /> */}
-      <button>+</button>
+      </TodoList>
+
+      <CreateTodoButton />
     </React.Fragment>
   );
 }
