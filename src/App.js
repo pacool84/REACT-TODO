@@ -7,9 +7,9 @@ import { CreateTodoButton } from "./CreateTodoButton";
 //import "./App.css";
 
 const todos = [
-  { text: "Enviar ordenes de compra", complete: false },
-  { text: "Comprar comida", complete: false },
-  { text: "Comprar bebida", complete: false },
+  { text: "Enviar ordenes de compra", completed: true },
+  { text: "Comprar comida", completed: false },
+  { text: "Comprar bebida", completed: true },
 ];
 function App() {
   return (
@@ -20,7 +20,11 @@ function App() {
 
       <TodoList>
         {todos.map((todo) => (
-          <TodoItem key={todo.text} text={todo.text} />
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+          />
         ))}
       </TodoList>
 
