@@ -1,11 +1,10 @@
 import React from "react";
 import "./CreateTodoButton.css";
 
-const handleClick = () => {
-  console.log("Create Todo Button Clicked");
-};
-
 function CreateTodoButton() {
+  const handleClick = () => {
+    console.log("Create Todo Button Clicked");
+  };
   return (
     <button className="CreateTodoButton" onClick={() => handleClick()}>
       +
