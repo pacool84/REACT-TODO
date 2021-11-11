@@ -1,9 +1,7 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import "./TodoSearch.css";
 
-function TodoSearch() {
-  const [searchValue, setSearchValue] = useState("");
-
+function TodoSearch({ searchValue, setSearchValue }) {
   const onSearchValueChange = (event) => {
     console.log(event.target.value);
     setSearchValue(event.target.value);
