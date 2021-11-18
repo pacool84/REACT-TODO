@@ -2,14 +2,24 @@ import React, { useState } from "react";
 import { AppUI } from "./AppUI";
 //import "./App.css";
 
-const defaultTodos = [
+/* const defaultTodos = [
   { text: "Enviar ordenes de compra", completed: true },
   { text: "Comprar comida", completed: false },
   { text: "Comprar bebida", completed: true },
   { text: "Comprar ropa", completed: false },
-];
+]; */
 
 function App() {
+  const localStorageTodos = localStorage.getItem("TODOS_V1");
+  let parsedTodos;
+
+  if (!localStorageTodos) {
+    localStorageTodos.setItem("TODOS_V1", JSON.stringify([]));
+    parsedTodos = [];
+  } else {
+    parsedTodos = JSON.parse(localStorageTodos);
+  }
+
   const [searchValue, setSearchValue] = useState("");
   const [todos, setTodos] = useState(defaultTodos);
 
