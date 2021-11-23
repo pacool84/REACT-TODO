@@ -13,18 +13,19 @@ function App() {
   const localStorageTodos = localStorage.getItem("TODOS_V1");
   let parsedTodos;
 
+  //Verificamos si hay contenido en el localStorage
   if (!localStorageTodos) {
-    localStorageTodos.setItem("TODOS_V1", JSON.stringify([]));
+    localStorage.setItem("TODOS_V1", JSON.stringify([]));
     parsedTodos = [];
   } else {
     parsedTodos = JSON.parse(localStorageTodos);
   }
 
+  const [todos, setTodos] = useState(parsedTodos);
   const [searchValue, setSearchValue] = useState("");
-  const [todos, setTodos] = useState(defaultTodos);
 
-  const totalTodos = todos.length;
   const completedTodos = todos.filter((todo) => todo.completed === true).length;
+  const totalTodos = todos.length;
   const pendingTodos = todos.filter((todo) => todo.completed === false).length;
 
   /* Logic to the search Bar */
@@ -40,11 +41,17 @@ function App() {
     });
   }
 
+  const saveTodos = (newTodos) => {
+    const stringifiedTodos = JSON.stringify(newTodos);
+    localStorage.setItem("TODOS_V1", stringifiedTodos);
+    setTodos(newTodos);
+  };
+
   const completeTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
-    setTodos(newTodos);
+    saveTodos(newTodos);
     /* todos[todoIndex] = {
         text: todos[todoIndex].text,
         completed: true
@@ -55,7 +62,7 @@ function App() {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
