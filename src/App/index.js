@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppUI } from "./AppUI";
 //import "./App.css";
 
@@ -70,6 +70,14 @@ function App() {
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
   };
+
+  console.log("RENDER antes del Use Effect");
+
+  useEffect(() => {
+    console.log("Usando USE EFFECT");
+  });
+
+  console.log("RENDER despues del Use Effect");
 
   return (
     <AppUI
