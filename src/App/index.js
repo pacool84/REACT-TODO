@@ -1,47 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AppUI } from "./AppUI";
-//import "./App.css";
 
-/* const defaultTodos = [
-  { text: "Enviar ordenes de compra", completed: true },
-  { text: "Comprar comida", completed: false },
-  { text: "Comprar bebida", completed: true },
-  { text: "Comprar ropa", completed: false },
-]; */
+// const defaultTodos = [
+//   { text: 'Cortar cebolla', completed: true },
+//   { text: 'Tomar el cursso de intro a React', completed: false },
+//   { text: 'Llorar con la llorona', completed: true },
+//   { text: 'LALALALAA', completed: false },
+// ];
 
-/* Custom Hook */
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [item, setItem] = React.useState(initialValue);
 
-  //Verificamos si hay contenido en el localStorage
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-  const [item, setItem] = useState(parsedItem);
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        const localStorageItem = localStorage.getItem(itemName);
+        let parsedItem;
+
+        if (!localStorageItem) {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = initialValue;
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
+
+        setItem(parsedItem);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+      }
+    }, 1500);
+  });
 
   const saveItem = (newItem) => {
-    const stringifiedItem = JSON.stringify(newItem);
-    localStorage.setItem(itemName, stringifiedItem);
-    setItem(newItem);
+    try {
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedItem);
+      setItem(newItem);
+    } catch (error) {
+      setError(error);
+    }
   };
-  return [item, saveItem];
+
+  return {
+    item,
+    saveItem,
+    loading,
+    error,
+  };
 }
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
+  const [searchValue, setSearchValue] = React.useState("");
 
-  const [searchValue, setSearchValue] = useState("");
-
-  const completedTodos = todos.filter((todo) => todo.completed === true).length;
+  const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;
-  const pendingTodos = todos.filter((todo) => todo.completed === false).length;
 
-  /* Logic to the search Bar */
-  let searchedTodos = initialValue;
+  let searchedTodos = [];
 
   if (!searchValue.length >= 1) {
     searchedTodos = todos;
@@ -58,10 +81,6 @@ function App() {
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
     saveTodos(newTodos);
-    /* todos[todoIndex] = {
-        text: todos[todoIndex].text,
-        completed: true
-      } */
   };
 
   const deleteTodo = (text) => {
@@ -71,19 +90,12 @@ function App() {
     saveTodos(newTodos);
   };
 
-  console.log("RENDER antes del Use Effect");
-
-  useEffect(() => {
-    console.log("Usando USE EFFECT");
-  });
-
-  console.log("RENDER despues del Use Effect");
-
   return (
     <AppUI
+      loading={loading}
+      error={error}
       totalTodos={totalTodos}
       completedTodos={completedTodos}
-      pendingTodos={pendingTodos}
       searchValue={searchValue}
       setSearchValue={setSearchValue}
       searchedTodos={searchedTodos}
